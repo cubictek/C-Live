@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>C-Live</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/cubic.css">
+
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">window.$ = window.jQuery = require('jquery');</script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div id="div_wrap">
+      <div id="div_bar">
+        <div class="tab active"><span class="title"></span><span class="close">✖</span></div>
+      </div>
+      <div id="div_view">
+        <webview class="webview active" src="initial.html" allowpopups preload="assets/js/preload.js"></webview>
+      </div>
+    </div>
+    <div id="progress"><div id="progress-stripe"></div></div>
+    <!-- <img id="progress" src="assets/img/logo.png" /> -->
+
+    <div class="modal fade" id="div_pop" tabindex="-1" role="dialog" aria-labelledby="div_popTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="div_popTitle">⚙ Setting</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-2">
+              <select class="custom-select" id="protocol">
+                <option value="https://" selected>https://</option>
+                <option value="http://">http://</option>
+              </select>
+              <input type="text" class="form-control" id="url" placeholder="URL" aria-label="URL">
+            </div>
+            <div class="input-group mb-0">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="autoLaunch">
+                <label class="form-check-label" for="autoLaunch">
+                  시스템 시작 시 프로그램 자동 실행
+                </label>
+              </div>
+            </div>
+            <div class="input-group mb-0">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="fullScreen">
+                <label class="form-check-label" for="fullScreen">
+                  프로그램 시작 시 전체화면으로 실행
+                </label>
+              </div>
+            </div>
+            <div class="input-group mb-0">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="multiTab">
+                <label class="form-check-label" for="multiTab">
+                  Multiple Tab 사용
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="bt_save">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--div id="div_back">
+      <div id="div_pop_url">
+        <div class="input-group mb-0">
+          <h1>Setting</h1>
+        </div>
+        <div class="input-group mb-0">
+          <div class="input-group-prepend">
+            <span class="input-group-text">URL</span>
+          </div>
+          <input type="text" class="form-control" id="url" placeholder="URL" aria-label="URL">
+          <div class="input-group-append">
+            <button class="btn btn-success" id="bt_save">저장</button>
+            <button class="btn btn-warning" id="bt_close">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div-->
+  </body>
+  <script src="assets/js/cubic.js"></script>
+</html>

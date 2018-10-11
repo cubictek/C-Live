@@ -1,0 +1,4 @@
+appId: kr.co.cubictek.c_live
+publish:
+    provider: github
+    token: b5de518dd403b8f8563a1927c43cb73afc893f0d
