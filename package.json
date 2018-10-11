@@ -17,11 +17,13 @@
       "target": "nsis",
       "icon": "build/icons/icon.ico"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "cubicrtmc",
-      "repo": "C-Live"
-    }],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "cubicrtmc",
+        "repo": "C-Live"
+      }
+    ],
     "nsis": {
       "oneClick": true,
       "installerHeaderIcon": "build/icons/icon.ico"
