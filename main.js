@@ -94,7 +94,10 @@ function createWindow () {
   });
 }
 
-app.on('ready', createWindow);
+app.on('ready', function () {
+  createWindow();
+  autoUpdater.checkForUpdates();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -107,6 +110,15 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+autoUpdater.on('update-downloaded', (info) => {
+  win.webContents.send('updateReady');
+});
+
+// when receiving a quitAndInstall signal, quit and install the new version ;)
+ipcMain.on("quitAndInstall", (event, arg) => {
+  autoUpdater.quitAndInstall();
+})
 
 // index.html(ipcRenderer)과 통신
 ipcMain.on('setting', function (e, setting) {

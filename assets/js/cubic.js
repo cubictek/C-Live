@@ -1,5 +1,12 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
+ipcRenderer.on('updateReady', e => {
+  console.log('업데이트 대기');
+  if (confirm('C-Live 최신버전이 있습니다. 설치하시겠습니까?')) {
+    ipcRenderer.send('quitAndInstall');
+  }
+});
+
 // browserWinidow(ipcMain)와 통신
 let setting = {};
 ipcRenderer.on('setting', (e, initialSetting) => {
