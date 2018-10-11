@@ -1,9 +1,9 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const { autoUpdater } = require('electron-updater');
+const isDev = require('electron-is-dev');
 const AutoLaunch = require('auto-launch');
 let path = require('path');
 
-console.log(autoUpdater);
 const Store = require('./store.js');
 
 // setting
@@ -96,7 +96,9 @@ function createWindow () {
 
 app.on('ready', function () {
   createWindow();
-  autoUpdater.checkForUpdates();
+  if (!isDev) {
+    autoUpdater.checkForUpdates();
+  }
 });
 
 app.on('window-all-closed', () => {
@@ -117,7 +119,9 @@ autoUpdater.on('update-downloaded', (info) => {
 
 // when receiving a quitAndInstall signal, quit and install the new version ;)
 ipcMain.on("quitAndInstall", (event, arg) => {
-  autoUpdater.quitAndInstall();
+  if (!isDev) {
+    autoUpdater.quitAndInstall();
+  }
 })
 
 // index.html(ipcRenderer)과 통신
