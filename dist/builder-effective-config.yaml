@@ -7,7 +7,7 @@ win:
   icon: build/icons/icon.ico
 publish:
   - provider: github
-    owner: cubicrtmc
+    owner: cubictek
     repo: C-Live
 nsis:
   oneClick: true
