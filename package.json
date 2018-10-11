@@ -15,12 +15,13 @@
     "appId": "kr.co.cubictek.c_live",
     "win": {
       "target": "nsis",
-      "icon": "build/icons/icon.ico",
-      "publish": [
-        "github",
-        "bintray"
-      ]
+      "icon": "build/icons/icon.ico"
     },
+    "publish": [{
+      "provider": "github",
+      "owner": "cubicrtmc",
+      "repo": "C-Live"
+    }],
     "nsis": {
       "oneClick": true,
       "installerHeaderIcon": "build/icons/icon.ico"
@@ -28,11 +29,11 @@
   },
   "devDependencies": {
     "electron": "^3.0.3",
-    "electron-builder": "^20.28.4",
-    "electron-is-dev": "^1.0.1"
+    "electron-builder": "^20.28.4"
   },
   "dependencies": {
     "auto-launch": "^5.0.5",
+    "electron-is-dev": "^1.0.1",
     "electron-updater": "^3.1.2",
     "jquery": "^3.3.1"
   }

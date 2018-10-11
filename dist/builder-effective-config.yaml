@@ -5,6 +5,9 @@ appId: kr.co.cubictek.c_live
 win:
   target: nsis
   icon: build/icons/icon.ico
+  publish:
+    - github
+    - bintray
 nsis:
   oneClick: true
   installerHeaderIcon: build/icons/icon.ico
