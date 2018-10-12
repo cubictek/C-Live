@@ -64,8 +64,18 @@
                 </label>
               </div>
             </div>
+            <div class="input-group mb-0">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="checkUpdate">
+                <label class="form-check-label" for="checkUpdate">
+                  사용자 업데이트 확인
+                </label>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-info" id="bt_update" disabled><img class="icon_refresh" src="assets/img/refresh.png" /> 업데이트 확인 중</button>
+            <div class="div_space"></div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="bt_save">Save</button>
           </div>

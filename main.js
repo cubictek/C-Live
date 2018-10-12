@@ -16,7 +16,8 @@ const store = new Store({
     url: '',
     autoLaunch: false,
     fullScreen: false,
-    multiTab: false
+    multiTab: false,
+    checkUpdate: true
   }
 });
 
@@ -38,8 +39,6 @@ function createWindow () {
   if (store.get('maximized')) {
     win.maximize();
   }
-  
-  let contents = win.webContents;
 
   win.$ = win.jQuery = require('jquery');
   win.loadFile('index.html');
@@ -49,18 +48,23 @@ function createWindow () {
   }
 
   // 로딩 완료 시 renderer에 setting값 전달
-  contents.on('did-finish-load', () => {
-    contents.send('setting', {
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('setting', {
       protocol: store.get('protocol'),
       url: store.get('url'),
       autoLaunch: store.get('autoLaunch'),
       fullScreen: store.get('fullScreen'),
-      multiTab: store.get('multiTab')
+      multiTab: store.get('multiTab'),
+      checkUpdate: store.get('checkUpdate')
     });
-  });
 
-  // contents.openDevTools();
-  // contents.session.clearCache(function() {});
+    // 업데이트 확인, 1시간마다 업데이트 체크
+    checkUpdate();
+  });
+  setInterval(checkUpdate, 60 * 60 * 1000);
+
+  // win.webContents.openDevTools();
+  // win.webContents.session.clearCache(function() {});
 
   // 창 이동 시 위치 저장
   win.on('move', () => {
@@ -96,9 +100,6 @@ function createWindow () {
 
 app.on('ready', function () {
   createWindow();
-  if (!isDev) {
-    autoUpdater.checkForUpdates();
-  }
 });
 
 app.on('window-all-closed', () => {
@@ -113,16 +114,25 @@ app.on('activate', () => {
   }
 });
 
-autoUpdater.on('update-downloaded', (info) => {
-  win.webContents.send('updateReady');
+function checkUpdate () {
+  if (!isDev) {
+    win.webContents.send('checkUpdate');
+    autoUpdater.checkForUpdates();
+  }
+}
+
+autoUpdater.on('update-not-available', e => {
+  win.webContents.send('updateNotExist', e);
 });
 
-// when receiving a quitAndInstall signal, quit and install the new version ;)
-ipcMain.on("quitAndInstall", (event, arg) => {
-  if (!isDev) {
-    autoUpdater.quitAndInstall();
-  }
-})
+
+autoUpdater.on('update-downloaded', e => {
+  win.webContents.send('updateReady', e);
+});
+
+ipcMain.on('quitAndInstall', e => {
+  autoUpdater.quitAndInstall();
+});
 
 // index.html(ipcRenderer)과 통신
 ipcMain.on('setting', function (e, setting) {
@@ -135,7 +145,7 @@ ipcMain.on('setting', function (e, setting) {
         win.setFullScreen(setting[key]);
       }
     }
-    if (key == 'autoLaunch') {
+    else if (key == 'autoLaunch') {
       // 빌드 전엔 electron.exe가 실행 됨
       if (appPath.lastIndexOf('electron.exe') > -1) {
         console.log('Works normally after build.');

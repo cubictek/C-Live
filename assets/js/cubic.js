@@ -1,12 +1,7 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
-ipcRenderer.on('updateReady', e => {
-  if (confirm('C-Live 최신버전이 있습니다. 설치하시겠습니까?')) {
-    ipcRenderer.send('quitAndInstall');
-  }
-});
-
 // browserWinidow(ipcMain)와 통신
+let msgUpdate;
 let setting = {};
 ipcRenderer.on('setting', (e, initialSetting) => {
   setting = initialSetting;
@@ -25,6 +20,42 @@ ipcRenderer.on('setting', (e, initialSetting) => {
   }
 });
 
+ipcRenderer.on('checkUpdate', (e, data) => {
+  $('#bt_update').prop('disabled', true).html(`<img class="icon_refresh" src="assets/img/refresh.png" /> 업데이트 확인 중`);
+});
+
+ipcRenderer.on('updateNotExist', (e, data) => {
+  let version = `v${data.version}`;
+  $('#bt_update').prop('disabled', true).html(`최신버전(${version})`);
+});
+
+ipcRenderer.on('updateReady', (e, data) => {
+  let version = `v${data.version}`;
+  msgUpdate = `최신버전(${version})으로 업데이트 하시겠습니까?`;
+  $('#bt_update').prop('disabled', false).html(`업데이트(${version})`);
+  if (setting.checkUpdate && !document.getElementById('alert_update')) {
+    let el_alert = document.createElement('div');
+    el_alert.setAttribute('class', 'alert alert-info alert-dismissible fade show fixed-bottom')
+    el_alert.setAttribute('role', 'alert');
+    el_alert.setAttribute('id', 'alert_update');
+    el_alert.innerHTML = `C-Live 최신버전(${version})이 확인되었습니다.
+    <button type="button" class="btn btn-info btn-sm" id="bt_alert_update">Update</button>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>`;
+    document.body.appendChild(el_alert);
+    document.getElementById('bt_alert_update').addEventListener('click', confirmUpdate);
+  }
+});
+
+document.getElementById('bt_update').addEventListener('click', confirmUpdate);
+
+function confirmUpdate () {
+  if (confirm(msgUpdate)) {
+    ipcRenderer.send('quitAndInstall');
+  }
+}
+
 // pop setting
 function popSetting () {
   $('#protocol').val(setting.protocol);
@@ -32,6 +63,7 @@ function popSetting () {
   $('#autoLaunch').prop('checked', setting.autoLaunch);
   $('#fullScreen').prop('checked', setting.fullScreen);
   $('#multiTab').prop('checked', setting.multiTab);
+  $('#checkUpdate').prop('checked', setting.checkUpdate);
   $('#div_pop').modal({backdrop: 'static'})
 }
 
@@ -43,12 +75,14 @@ function saveSetting () {
     let autoLaunch = $('#autoLaunch').prop('checked');
     let fullScreen = $('#fullScreen').prop('checked');
     let multiTab = $('#multiTab').prop('checked');
+    let checkUpdate = $('#checkUpdate').prop('checked');
     setting = {
       protocol,
       url,
       autoLaunch,
       fullScreen,
-      multiTab
+      multiTab,
+      checkUpdate
     };
     ipcRenderer.send('setting', setting);
     $('#div_pop').modal('hide');
