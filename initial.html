@@ -38,18 +38,25 @@
       100%    {}
     }
     img.logo {
-      max-width: 50vmin;
-      max-height: 50vmin;
+      max-width: 60vmin;
+      max-height: 60vmin;
       position: relative;
       /* animation-name: jump;
       animation-duration: 3s;
       animation-fill-mode: both;
       animation-iteration-count: infinite; */
     }
+    @keyframes emphasis {
+      0%    {text-shadow: 0 0 1vmin rgba(255,0,0,1);}
+      33.3% {text-shadow: 0 0 1vmin rgba(0,255,0,1);}
+      66.7% {text-shadow: 0 0 1vmin rgba(0,0,255,1);}
+      100%  {text-shadow: 0 0 1vmin rgba(255,0,0,1);}
+    }
     div.title {
-      font-size: 20vmin;
+      font-size: 10vmin;
       font-weight: bold;
-      /* font-style: italic; */
+      text-shadow: inset 1vmin 1vmin 1vmin rgba(255,255,255,1);
+      /* animation: emphasis 5s linear infinite; */
     }
     div.content {
       color: red;
@@ -59,17 +66,13 @@
       position: fixed;
       bottom: 0;
       right: 0;
-      font-size: 2.5vmin;
+      font-size: 1.25vmin;
     }
     @keyframes drop {
       0%    {top: -20px;}
       100%  {top: calc(100% + 20px);transform: rotate(360deg);}
     }
     </style>
-
-    <!-- <script src="assets/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script> -->
   </head>
   <body>
     <img class="logo" src="assets/img/logo.png" />
@@ -77,27 +80,4 @@
     <div class="content">서버 설정이 필요합니다. 관리자에게 문의하세요.</div>
     <div id="copyright">Copyright &copy; 2018 Cubictek Co., Ltd. All rights reserved.</div>
   </body>
-  <script>
-    /*
-    let nDropSpeed = 5 + parseInt(Math.random() * 15);
-    (function makeSnow () {
-      let el_snow = document.createElement('div');
-      document.body.appendChild(el_snow);
-      el_snow.style.display = 'inline-block';
-      el_snow.style.position = 'absolute';
-      el_snow.style.left = (-0.5 + Math.random() * 2) * window.innerWidth + 'px';
-      el_snow.style.fontSize = Math.random() * 2 + 'vmin';
-      el_snow.style.color = '#FFFFFF';
-      el_snow.style.textShadow = '0 0 2px rgba(0,127,255,0.5)';
-      el_snow.innerHTML = '&#10054;';
-      el_snow.style.animationName = 'drop';
-      el_snow.style.animationDuration = nDropSpeed + 's';
-      el_snow.style.animationTimingFunction = 'linear';
-      setTimeout(() => {
-        el_snow.remove();
-      }, nDropSpeed * 1000)
-      setTimeout(makeSnow, Math.random() * 100);
-    })();
-    */
-  </script>
 </html>

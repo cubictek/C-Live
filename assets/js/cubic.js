@@ -210,3 +210,27 @@ function initialWebview (webview) {
     });
   });
 }
+
+document.getElementById('tab_list').addEventListener('mousewheel', function (e) {
+  if (e.deltaY != 0) {
+    this.scrollLeft += e.deltaY;
+  }
+});
+
+document.getElementById('add_tab').addEventListener('click', function (e) {
+  let tabs = document.querySelectorAll('.tab');
+  let tab_clone = tabs[0].cloneNode(true);
+  document.querySelector('.tab.active').classList.remove('active');
+  tabs[0].parentNode.insertBefore(tab_clone, tabs[tabs.length - 1].nextSibling);
+  tab_clone.classList.add('active');
+
+  document.querySelector('.webview.active').classList.remove('active');
+  let webview_new = document.createElement('webview');
+  webview_new.setAttribute('class', 'webview active');
+  webview_new.setAttribute('src', setting.url ? setting.protocol + setting.url : 'initial.html');
+  webview_new.setAttribute('preload', 'assets/js/preload.js');
+  webview_new.setAttribute('allow_popup', '');
+  webviews[0].parentNode.insertBefore(webview_new, webviews[webviews.length - 1].nextSibling);
+  initialWebview (webview_new);
+  document.getElementById('tab_list').scrollLeft = document.getElementById('tab_list').scrollWidth;
+});

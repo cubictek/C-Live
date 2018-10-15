@@ -69,7 +69,8 @@ function createWindow () {
   // 창 이동 시 위치 저장
   win.on('move', () => {
     let maximized = win.isMaximized();
-    if (!maximized) {
+    let fullScreen = win.isFullScreen();
+    if (!maximized && !fullScreen) {
       let bounds = win.getBounds();
       store.set('windowBounds', bounds);
     }
@@ -83,14 +84,16 @@ function createWindow () {
   // 사이즈 변경 적용
   win.on('resize', () => {
     let maximized = win.isMaximized();
-    if (!maximized) {
+    let fullScreen = win.isFullScreen();
+    if (!maximized && !fullScreen) {
       // resize 가 unmaximize보다 먼저 발동하여 unmaximize 먼저 실행 위해 setTimeout 처리
       setTimeout(() => {
         let bounds = win.getBounds();
         store.set('windowBounds', bounds);
       });
     }
-    store.set('maximized', win.isMaximized());
+    store.set('maximized', maximized);
+    store.set('fullScreen', fullScreen);
   });
 
   win.on('closed', () => {

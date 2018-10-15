@@ -17,7 +17,16 @@ html, body {
   padding: 2px 2px 0 2px;
   overflow: hidden;
   display: flex;
+  align-items: center;
   user-select: none;
+}
+
+#tab_list {
+  max-width: calc(100% - (7pt + 8px));
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .tab {
@@ -25,8 +34,9 @@ html, body {
   min-width: 80px;
   height: 28px;
   background-color: #CFCFCF;
-  padding: 4px 0 4px 8px;
+  padding: 4px 8px;
   display: flex;
+  align-items: center;
   border-width: 1px 1px 1px 1px;
   border-style: solid;
   border-color: #BFBFBF;
@@ -43,16 +53,43 @@ html, body {
 .tab .title {
   flex: 1;
   font-size: 9pt;
-  line-height: 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .tab .close {
-  width: 20px;
-  font-size: 9pt;
+  width: calc(7pt + 8px);
+  height: calc(7pt + 8px);
+  font-size: 7pt;
   text-align: center;
-  line-height: 20px;
+  padding: 4px 5px 4px 3px;
+  border-radius: 10px;
+}
+.tab .close:hover {
+  background-color: #CFCFCF;
+}
+
+#add_tab {
+  width: calc(9pt + 9px);
+  height: calc(9pt + 9px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 9pt;
+  padding: 4px 4px 5px 5px;
+  margin: 0 4px;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: rgba(0,0,0,0);
+  border-radius: 15px;
+  cursor: pointer;
+  opacity: 0.5;
+  vertical-align: middle;
+}
+#add_tab:hover {
+  opacity: 1;
+  background-color: #CFCFCF;
+  border-color: #BFBFBF;
 }
 
 #div_view {
