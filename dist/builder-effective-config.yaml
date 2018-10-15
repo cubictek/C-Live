@@ -5,11 +5,15 @@ appId: kr.co.cubictek.c_live
 win:
   target: nsis
   icon: build/icons/icon.ico
+nsis:
+  oneClick: true
+  installerHeaderIcon: build/icons/icon.ico
+linux:
+  target:
+    - rpm
+  icon: build/icons/icon.png
 publish:
   - provider: github
     owner: cubictek
     repo: C-Live
-nsis:
-  oneClick: true
-  installerHeaderIcon: build/icons/icon.ico
 electronVersion: 3.0.3

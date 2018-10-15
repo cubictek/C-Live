@@ -1,15 +1,22 @@
 {
   "name": "C-Live",
   "version": "1.0.4",
-  "description": "",
+  "description": "cubictek RTMC electron app",
   "main": "main.js",
   "repository": "https://github.com/cubictek/C-Live",
   "scripts": {
     "start": "electron .",
+    "build:win": "npm run build:win32 && npm run build:win64",
+    "build:win32": "build --win --ia32",
+    "build:win64": "build --win --x64",
+    "build:osx": "build --mac",
+    "build:linux32": "build --linux --ia32",
+    "build:linux64": "build --linux --x64",
+    "build:linux": "build --linux",
     "build": "build --win",
     "ship": "build --win -p always"
   },
-  "author": "",
+  "author": "cubictek <cubicrtmc@gmail.com>",
   "license": "ISC",
   "build": {
     "appId": "kr.co.cubictek.c_live",
@@ -17,17 +24,23 @@
       "target": "nsis",
       "icon": "build/icons/icon.ico"
     },
+    "nsis": {
+      "oneClick": true,
+      "installerHeaderIcon": "build/icons/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "rpm"
+      ],
+      "icon": "build/icons/icon.png"
+    },
     "publish": [
       {
         "provider": "github",
         "owner": "cubictek",
         "repo": "C-Live"
       }
-    ],
-    "nsis": {
-      "oneClick": true,
-      "installerHeaderIcon": "build/icons/icon.ico"
-    }
+    ]
   },
   "devDependencies": {
     "electron": "^3.0.3",
