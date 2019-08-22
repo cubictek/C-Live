@@ -33,8 +33,15 @@ function createWindow () {
   let windowBounds = store.get('windowBounds');
   win = new BrowserWindow({
     icon: path.join(__dirname, 'build/icons/64x64.png'),
-    ...windowBounds
+    ...windowBounds,
+    webPreferences: {
+      nodeIntegration: true,
+      webviewTag: true,
+    },
+    backgroundColor: '#003F7F',
+    show: false,
   });
+  win.setMenu(null);
 
   if (store.get('maximized')) {
     win.maximize();
@@ -65,6 +72,11 @@ function createWindow () {
 
   // win.webContents.openDevTools();
   // win.webContents.session.clearCache(function() {});
+
+  // 보여줄 준비가 되면 윈도우를 표시
+  win.once('ready-to-show', () => {
+    win.show();
+  });
 
   // 창 이동 시 위치 저장
   win.on('move', () => {
@@ -106,9 +118,10 @@ app.on('ready', function () {
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
+  // if (process.platform !== 'darwin') {
+  //   app.quit();
+  // }
 });
 
 app.on('activate', () => {
