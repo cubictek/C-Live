@@ -10,8 +10,24 @@ ipcRenderer.on('setting', (e, initialSetting) => {
   if (setting.url) {
     document.querySelector('.webview').setAttribute('src', setting.protocol + setting.url);
     fetch(setting.protocol + setting.url).then(res => {
+      if (res.status === 200) return;
+
+      document.querySelector('.webview').setAttribute('src', 'error.html');
     }).catch(err => {
-      alert('서버 주소가 올바르지 않습니다.');
+      let el_alert = document.createElement('div');
+      el_alert.setAttribute('class', 'alert alert-danger alert-dismissible fade show fixed-bottom')
+      el_alert.setAttribute('role', 'alert');
+      el_alert.setAttribute('id', 'alert_update');
+      el_alert.style.zIndex = 1051;
+      el_alert.innerHTML = `서버 주소가 올바르지 않습니다.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>`;
+      document.body.appendChild(el_alert);
+      setTimeout(() => {
+        $(el_alert).alert('close');
+      }, 3000);
+      // alert('서버 주소가 올바르지 않습니다.');
       document.querySelector('.webview').setAttribute('src', 'initial.html');
       popSetting();
     });
@@ -44,16 +60,16 @@ ipcRenderer.on('updateReady', (e, data) => {
       <span aria-hidden="true">&times;</span>
     </button>`;
     document.body.appendChild(el_alert);
-    document.getElementById('bt_alert_update').addEventListener('click', confirmUpdate);
+    el_alert.querySelector('#bt_alert_update').addEventListener('click', confirmUpdate);
   }
 });
 
 document.getElementById('bt_update').addEventListener('click', confirmUpdate);
 
 function confirmUpdate () {
-  if (confirm(msgUpdate)) {
-    ipcRenderer.send('quitAndInstall');
-  }
+  // if (confirm(msgUpdate)) {
+  ipcRenderer.send('quitAndInstall');
+  // }
 }
 
 // pop setting
@@ -69,25 +85,25 @@ function popSetting () {
 
 // save setting
 function saveSetting () {
-  if (confirm('설정값을 [저장]하시겠습니까?')) {
-    let protocol = $('#protocol').val();
-    let url = $('#url').val();
-    let autoLaunch = $('#autoLaunch').prop('checked');
-    let fullScreen = $('#fullScreen').prop('checked');
-    let multiTab = $('#multiTab').prop('checked');
-    let checkUpdate = $('#checkUpdate').prop('checked');
-    setting = {
-      protocol,
-      url,
-      autoLaunch,
-      fullScreen,
-      multiTab,
-      checkUpdate
-    };
-    ipcRenderer.send('setting', setting);
-    $('#div_pop').modal('hide');
-    location.reload();
-  }
+  // if (confirm('설정값을 [저장]하시겠습니까?')) {
+  let protocol = $('#protocol').val();
+  let url = $('#url').val();
+  let autoLaunch = $('#autoLaunch').prop('checked');
+  let fullScreen = $('#fullScreen').prop('checked');
+  let multiTab = $('#multiTab').prop('checked');
+  let checkUpdate = $('#checkUpdate').prop('checked');
+  setting = {
+    protocol,
+    url,
+    autoLaunch,
+    fullScreen,
+    multiTab,
+    checkUpdate
+  };
+  ipcRenderer.send('setting', setting);
+  $('#div_pop').modal('hide');
+  location.reload();
+  // }
 }
 
 // call popup
@@ -112,7 +128,7 @@ let progress = document.getElementById('progress');
 let stripe = document.getElementById('progress-stripe');
 
 let webviews = document.querySelectorAll('.webview');
-webviews.forEach((webview) => {
+webviews.forEach(webview => {
   initialWebview(webview);
 });
 
@@ -209,6 +225,16 @@ function initialWebview (webview) {
       $(progress).hide();
     });
   });
+
+  // setTimeout(() => {
+  //   webview.printToPDF({
+  //     printBackground: true, landscape: true
+  //   }).then(data => {
+  //     console.log(data);
+  //   }).catch(error => {
+  //     console.log(error);
+  //   })
+  // }, 2000)
 }
 
 document.getElementById('tab_list').addEventListener('mousewheel', function (e) {

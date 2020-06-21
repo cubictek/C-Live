@@ -2,7 +2,8 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 const AutoLaunch = require('auto-launch');
-let path = require('path');
+const path = require('path');
+const request = require('request');
 
 const Store = require('./store.js');
 
@@ -70,8 +71,8 @@ function createWindow () {
   });
   setInterval(checkUpdate, 60 * 60 * 1000);
 
-  // win.webContents.openDevTools();
-  // win.webContents.session.clearCache(function() {});
+  win.webContents.openDevTools();
+  win.webContents.session.clearCache(function() {});
 
   // 보여줄 준비가 되면 윈도우를 표시
   win.once('ready-to-show', () => {
@@ -131,10 +132,17 @@ app.on('activate', () => {
 });
 
 function checkUpdate () {
-  if (!isDev) {
+  // if (!isDev) {
     win.webContents.send('checkUpdate');
-    autoUpdater.checkForUpdates();
-  }
+    // console.log(autoUpdater);
+    autoUpdater.checkForUpdates()
+    .then(res => {
+      // console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    });
+  // }
 }
 
 autoUpdater.on('update-not-available', e => {
@@ -176,3 +184,22 @@ ipcMain.on('setting', function (e, setting) {
     }
   }
 });
+
+// 주기적 LOG 전송
+let sendAccessLog = () => {
+  let sSite = store.get('protocol') + store.get('url');
+  request({
+    uri: 'http://211.238.138.150/qlt_rtmc/page/cubic/clive_use_ratio_process.php',
+    method: 'POST',
+    form: {
+      site: sSite
+    },
+  }, (error, response, body) => {
+    if (error) {
+      console.log(error, response, body);
+    }
+  });
+};
+sendAccessLog();
+setInterval(sendAccessLog, 60 * 60 * 1000);
+// 주기적 LOG 전송
