@@ -66,14 +66,14 @@ ipcRenderer.on('updateReady', (e, data) => {
 
 document.getElementById('bt_update').addEventListener('click', confirmUpdate);
 
-function confirmUpdate () {
+function confirmUpdate() {
   // if (confirm(msgUpdate)) {
   ipcRenderer.send('quitAndInstall');
   // }
 }
 
 // pop setting
-function popSetting () {
+function popSetting() {
   $('#protocol').val(setting.protocol);
   $('#url').val(setting.url);
   $('#autoLaunch').prop('checked', setting.autoLaunch);
@@ -84,7 +84,7 @@ function popSetting () {
 }
 
 // save setting
-function saveSetting () {
+function saveSetting() {
   // if (confirm('설정값을 [저장]하시겠습니까?')) {
   let protocol = $('#protocol').val();
   let url = $('#url').val();
@@ -132,7 +132,7 @@ webviews.forEach(webview => {
   initialWebview(webview);
 });
 
-function initialWebview (webview) {
+function initialWebview(webview) {
   webviews = Array.prototype.slice.call(document.querySelectorAll('.webview'));
   let nIdx = webviews.indexOf(webview);
   let tab = document.querySelectorAll('.tab')[nIdx];
@@ -163,12 +163,14 @@ function initialWebview (webview) {
   });
   
   webview.addEventListener('ipc-message', function (e) {
-    // console.log(e)
+    console.log(e)
     if (e.channel === 'html-content') {
       var html_contents = e.args[0];
       tab.querySelector('.title').innerHTML = html_contents;
     } else if (e.channel === 'pop-setting') {
       popSetting();
+    } else if (e.channel === 'page-refresh') {
+      webview.reload();
     }
   });
 
@@ -185,7 +187,7 @@ function initialWebview (webview) {
     webview_new.setAttribute('preload', 'assets/js/preload.js');
     webview_new.setAttribute('allow_popup', '');
     webview.parentNode.insertBefore(webview_new, webview.nextSibling);
-    initialWebview (webview_new);
+    initialWebview(webview_new);
 
     /*
     if (e.disposition === 'foreground-tab') {
@@ -257,6 +259,6 @@ document.getElementById('add_tab').addEventListener('click', function (e) {
   webview_new.setAttribute('preload', 'assets/js/preload.js');
   webview_new.setAttribute('allow_popup', '');
   webviews[0].parentNode.insertBefore(webview_new, webviews[webviews.length - 1].nextSibling);
-  initialWebview (webview_new);
+  initialWebview(webview_new);
   document.getElementById('tab_list').scrollLeft = document.getElementById('tab_list').scrollWidth;
 });

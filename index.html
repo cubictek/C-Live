@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <title>C-Live</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/cubic.css">
 
-    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <!-- <script src="assets/js/jquery-3.3.1.min.js"></script> -->
     <script type="text/javascript">window.$ = window.jQuery = require('jquery');</script>
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -20,7 +21,7 @@
         <span id="add_tab" title="새 탭">➕</span>
       </div>
       <div id="div_view">
-        <webview class="webview active" src="initial.html" allowpopups preload="assets/js/preload.js"></webview>
+        <webview class="webview active" src="initial.html" preload="assets/js/preload.js"></webview>
       </div>
     </div>
     <div id="progress"><div id="progress-stripe"></div></div>

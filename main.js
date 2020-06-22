@@ -114,19 +114,16 @@ function createWindow () {
   });
 }
 
-app.on('ready', function () {
-  createWindow();
-});
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-  app.quit();
-  // if (process.platform !== 'darwin') {
-  //   app.quit();
-  // }
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', () => {
-  if (win === null) {
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
